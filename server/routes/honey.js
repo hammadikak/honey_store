@@ -1,0 +1,12 @@
+const router = require('express').Router();
+const { getAll, getOne, create, update } = require('../controllers/honeyController');
+const del = require('../controllers/honeyController').delete;
+const { protect, authorize } = require('../middlewares/auth');
+const { uploadHoneyImage } = require('../config/upload');
+router.use(protect);
+router.get('/', getAll);
+router.get('/:id', getOne);
+router.post('/', authorize('admin', 'inventory_manager'), uploadHoneyImage, create);
+router.put('/:id', authorize('admin', 'inventory_manager'), uploadHoneyImage, update);
+router.delete('/:id', authorize('admin'), del);
+module.exports = router;
